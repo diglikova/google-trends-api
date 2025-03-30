@@ -13,8 +13,8 @@ def get_trend(keyword: str = Query(...)):
     pytrends.build_payload([keyword], cat=0, timeframe="now 7-d")
     df = pytrends.interest_over_time()
 
-    if df.empty or len(df) < 2:
-        return {"trend": keyword, "error": "Not enough data"}
+    if df.empty or len(df) < 2 or keyword not in df.columns:
+        return {"trend": keyword, "error": "Not enough data or keyword not found"}
 
     v1 = int(df[keyword].iloc[-2])
     v2 = int(df[keyword].iloc[-1])
@@ -25,5 +25,5 @@ def get_trend(keyword: str = Query(...)):
         "from": v1,
         "to": v2,
         "growth": round(growth, 1),
-        "suspicious": growth > 30
+        "suspicious": growth > 10
     }
