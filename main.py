@@ -19,7 +19,7 @@ def get_trend(keyword: str = Query(...)):
     v1 = int(df[keyword].iloc[-2])
     v2 = int(df[keyword].iloc[-1])
     growth = ((v2 - v1) / (v1 or 1)) * 100
-
+print("Data:", data)
     return {
         "trend": keyword,
         "from": v1,
