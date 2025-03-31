@@ -1,12 +1,9 @@
 from fastapi import FastAPI, Query
 from pytrends.request import TrendReq
-
 app = FastAPI()
-
 @app.get("/")
 def read_root():
     return {"status": "ok"}
-
 @app.get("/trend")
 def get_trend(keyword: str = Query(...)):
     pytrends = TrendReq(hl="en-US", tz=0)
@@ -15,11 +12,9 @@ def get_trend(keyword: str = Query(...)):
 
     if df.empty or len(df) < 2 or keyword not in df.columns:
         return {"trend": keyword, "error": "Not enough data or keyword not found"}
-
     v1 = int(df[keyword].iloc[-2])
     v2 = int(df[keyword].iloc[-1])
     growth = ((v2 - v1) / (v1 or 1)) * 100
-print("Data:", data)
     return {
         "trend": keyword,
         "from": v1,
